@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Menu, X, UtensilsCrossed } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate()
 
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Database', path: '/database' },
+    { name: 'Favorites', path: '/favourite' },
     { name: 'System', path: '/system' },
   ];
 
@@ -35,13 +36,10 @@ const Navbar = () => {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="font-montserrat text-[10px] uppercase tracking-[0.2em] text-text-muted hover:text-neon-lime transition-colors"
-              >
+              <button 
+              onClick={() => navigate(`${link.path}`)}>
                 {link.name}
-              </Link>
+              </button>
             ))}
             <button className="px-4 py-2 border border-neon-green text-neon-green font-mono text-[10px] uppercase tracking-widest rounded hover:bg-neon-green/10 transition-all">
               Login Core

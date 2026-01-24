@@ -1,5 +1,5 @@
 import type { Recipe } from '../types/recipe';
-import { Zap, Flame, Target } from 'lucide-react';
+import { Zap, Flame, Target, BookHeart } from 'lucide-react';
 
 const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
   return (
@@ -35,9 +35,14 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
           </div>
         </div>
 
-        <button className="w-full py-2 border border-neon-green text-neon-green text-[10px] uppercase font-mono tracking-widest rounded-lg hover:bg-neon-green hover:text-bg-main transition-all">
-          View_Details
-        </button>
+        <div className='flex flex-row gap-2 item-center'>
+          <button className="w-5/6 py-2 border border-neon-green text-neon-green text-[10px] uppercase font-mono tracking-widest rounded-lg hover:bg-neon-green hover:text-bg-main transition-all ">
+            View_Details
+          </button>
+          <div className='place-item-center w-1/6 py-2 border border-neon-green text-bg-main text-[10px] font-mono tracking-widest rounded-lg hover:bg-neon-green hover:text-bg-main transition-all bg-gradient-to-tr from-neon-green via-neon-lime to-neon-teal justify-center'>
+              <BookHeart />
+          </div>
+        </div>
       </div>
     </div>
   );

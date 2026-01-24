@@ -2,11 +2,21 @@ import { Search, Leaf } from 'lucide-react';
 import { useState } from 'react';
 
 const Hero = ({ onSearch }: {onSearch: (q:string) => void}) => {
-   const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const executeSearch = () => {
-    onSearch(searchTerm);
-  };
+  const categories = [
+  { id: 'western', label: 'Western', icon: '🍔' },
+  { id: 'healthy', label: 'Healthy', icon: '🥗' },
+  { id: 'asian', label: 'Asian', icon: '🍜' },
+  { id: 'seafood', label: 'Seafood', icon: '🍤' },
+  { id: 'dessert', label: 'Dessert', icon: '🍰' },
+];
+
+  const executeSearch = (query?: string) => {
+  // Jika ada 'query' dari tombol, gunakan itu. Jika tidak, gunakan 'searchTerm' dari input.
+  const finalQuery = typeof query === 'string' ? query : searchTerm;
+  onSearch(finalQuery);
+};
 
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-bg-main pt-20 mt-3">
@@ -64,6 +74,24 @@ const Hero = ({ onSearch }: {onSearch: (q:string) => void}) => {
               </button>
             </div>
           </div>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8 animate-fade-in">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => {
+                setSearchTerm(cat.id); // Update teks di input
+                executeSearch(cat.id); // Langsung cari
+              }}
+              className="group relative px-4 py-2 bg-bg-secondary/40 border border-border-soft rounded-full hover:border-neon-green transition-all duration-300"
+            >
+              <span className="flex items-center gap-2 text-xs font-mono uppercase tracking-tighter text-text-muted group-hover:text-neon-green">
+                <span className="opacity-70">{cat.icon}</span>
+                {cat.label}
+              </span>
+            </button>
+          ))}
+        </div>
 
           {/* Statistik Singkat */}
           <div className="flex flex-col md:flex-row justify-center gap-8 mt-16 border-t border-border-soft/50 pt-8">
