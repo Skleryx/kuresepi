@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { recipeService } from '../services/api';
 import type { Recipe } from '../types/recipe';
+import type { FatSecretSearchItem, FatSecretSearchResponse } from '../types/fatsecret';
 import RecipeCard from '../components/RecipeCard';
 import Hero from '../components/Hero';
+import { searchRecipes } from '../services/fatsecret';
 
 const Home = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -12,10 +13,32 @@ const Home = () => {
   const handleSearch = async (query: string) => {
     setLoading(true);
     try {
-      const data = await recipeService.searchRecipes(query || "chicken");
-      setRecipes(data);
+      const data = await searchRecipes(query) as FatSecretSearchResponse;
+
+
+      // Map FatSecret data to our Recipe interface
+      // Note: FatSecret structure might vary, adding safety checks
+      if (data?.recipes?.recipe) {
+        // Handle case where single result is an object, multiple is object[]
+        const results = Array.isArray(data.recipes.recipe)
+          ? data.recipes.recipe
+          : [data.recipes.recipe];
+
+        const mappedRecipes: Recipe[] = results.map((item: FatSecretSearchItem) => ({
+          id: item.recipe_id,
+          title: item.recipe_name,
+          description: item.recipe_description,
+          thumbnail: item.recipe_image || 'https://via.placeholder.com/300x200?text=No+Image', // Fallback image
+          calories: item.recipe_nutrition?.calories
+        }));
+        setRecipes(mappedRecipes);
+      } else {
+        setRecipes([]);
+      }
+
     } catch (error) {
       console.error("Search error:", error);
+      setRecipes([]);
     } finally {
       setLoading(false);
     }
@@ -27,7 +50,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-bg-main min-h-screen text-text-main">
+    <div className="bg-bg-main min-h-screen text-text-main pb-20">
       {/* Komponen Header & Search */}
       <Hero onSearch={handleSearch} />
 
