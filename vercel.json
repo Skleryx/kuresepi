@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/api/token",
+            "destination": "/api/token"
+        },
+        {
+            "source": "/api/fatsecret",
+            "destination": "/api/fatsecret"
+        }
+    ]
+}
